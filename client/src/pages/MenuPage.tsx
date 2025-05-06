@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Container,
-  Grid,
-  GridItem,
-  Heading,
-  Text,
-  Flex,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  Select,
-  Button,
-  useBreakpointValue,
-  Icon,
-  Drawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/layout';
+import { Container } from '@chakra-ui/layout';
+import { Grid } from '@chakra-ui/layout';
+import { GridItem } from '@chakra-ui/layout';
+import { Heading } from '@chakra-ui/layout';
+import { Text } from '@chakra-ui/layout';
+import { Flex } from '@chakra-ui/layout';
+import { InputGroup } from '@chakra-ui/input';
+import { InputLeftElement } from '@chakra-ui/input';
+import { Input } from '@chakra-ui/input';
+import { Select } from '@chakra-ui/select';
+import { Button } from '@chakra-ui/button';
+import { useBreakpointValue } from '@chakra-ui/media-query';
+import { Icon } from '@chakra-ui/icon';
+import { Drawer } from '@chakra-ui/modal';
+import { DrawerBody } from '@chakra-ui/modal';
+import { DrawerHeader } from '@chakra-ui/modal';
+import { DrawerOverlay } from '@chakra-ui/modal';
+import { DrawerContent } from '@chakra-ui/modal';
+import { DrawerCloseButton } from '@chakra-ui/modal';
+import { useDisclosure } from '@chakra-ui/hooks';
 import ProductGrid from '../components/products/ProductGrid';
 import ProductFilter from '../components/products/ProductFilter';
 import useProductStore from '../stores/productStore';
@@ -201,7 +199,7 @@ const MenuPage = (): React.ReactElement => {
             products={products}
             isLoading={isLoading}
             error={error}
-            columns={{ base: 1, sm: 2, lg: 3, xl: 3 }}
+            columns={{ base: 1, md: 2, lg: 3, xl: 3 }}
             spacing={6}
           />
         </GridItem>

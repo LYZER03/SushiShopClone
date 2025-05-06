@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Flex, Grid, GridItem, Heading, Image, Text, VStack } from '@chakra-ui/react';
+import { Box, Container, Flex, Grid, GridItem, Heading, Image, Text } from '@chakra-ui/react';
 
 /**
  * AboutPage component for displaying information about the restaurant
@@ -7,7 +7,7 @@ import { Box, Container, Flex, Grid, GridItem, Heading, Image, Text, VStack } fr
 const AboutPage: React.FC = () => {
   return (
     <Container maxW="container.xl" py={10}>
-      <VStack spacing={12} align="stretch">
+      <Flex direction="column" gap={12} alignItems="stretch" width="100%">
         {/* Hero Section */}
         <Box textAlign="center">
           <Heading as="h1" size="2xl" mb={4}>
@@ -177,7 +177,7 @@ const AboutPage: React.FC = () => {
             </GridItem>
           </Grid>
         </Box>
-      </VStack>
+      </Flex>
     </Container>
   );
 };

@@ -1,27 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Container,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Text,
-  Button,
-  Image,
-  Badge,
-} from '@chakra-ui/react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Box } from '@chakra-ui/layout';
+import { Container } from '@chakra-ui/layout';
+import { Flex } from '@chakra-ui/layout';
+import { Grid } from '@chakra-ui/layout';
+import { GridItem } from '@chakra-ui/layout';
+import { Heading } from '@chakra-ui/layout';
+import { Text } from '@chakra-ui/layout';
+import { Badge } from '@chakra-ui/layout';
+import { Image } from '@chakra-ui/image';
+import { Button } from '@chakra-ui/button';
+import { IconButton } from '@chakra-ui/button';
+import { Icon } from '@chakra-ui/icon';
+import { useColorMode } from '@chakra-ui/color-mode';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiShoppingCart, FiPlus, FiMinus } from 'react-icons/fi';
 import useProductStore from '../stores/productStore';
 import useCartStore from '../stores/cartStore';
 import { ProductTag } from '../types/product.types';
+import Breadcrumb, { generateBreadcrumbs } from '../components/navigation/Breadcrumb';
+import CartSidebar from '../components/cart/CartSidebar';
+import useCartSidebar from '../hooks/useCartSidebar';
 
 /**
  * ProductDetailPage displays detailed information about a specific product
+ * Enhanced with motion animations and improved UI
  */
 const ProductDetailPage = (): React.ReactElement => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { colorMode } = useColorMode();
+  
+  // Get store data first
+  const { fetchProductById, selectedProduct, isLoading, error } = useProductStore();
+  const { addItem } = useCartStore();
+  
+  // Cart sidebar state
+  const { isOpen, openSidebar, closeSidebar } = useCartSidebar();
+  
+  // State for quantity selection
+  const [quantity, setQuantity] = useState(1);
+  
   // Custom notification state to replace useToast
   const [notification, setNotification] = useState<{
     title: string;
@@ -29,8 +49,29 @@ const ProductDetailPage = (): React.ReactElement => {
     isVisible: boolean;
   } | null>(null);
   
-  const { fetchProductById, selectedProduct, isLoading, error } = useProductStore();
-  const { addItem } = useCartStore();
+  // Generate breadcrumb items based on product data
+  const breadcrumbItems = generateBreadcrumbs(location.pathname, {
+    menu: 'Menu',
+    products: 'Products',
+    [id || '']: selectedProduct?.name || 'Product Details'
+  });
+  
+  // Handle increasing quantity
+  const increaseQuantity = () => {
+    setQuantity(prev => Math.min(prev + 1, 10)); // Limit to 10 items
+  };
+  
+  // Handle decreasing quantity
+  const decreaseQuantity = () => {
+    setQuantity(prev => Math.max(prev - 1, 1)); // Minimum 1 item
+  };
+  
+  // Animation variants
+  const pageVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
+  };
   
   // Fetch product data
   useEffect(() => {
@@ -39,24 +80,31 @@ const ProductDetailPage = (): React.ReactElement => {
     }
   }, [id, fetchProductById]);
   
-  // Handle adding to cart
+  // Handle adding to cart with animation feedback
   const handleAddToCart = () => {
     if (selectedProduct) {
       const defaultImage = selectedProduct.images.find(img => img.isDefault) || selectedProduct.images[0];
       
+      // Add to cart with selected quantity
       addItem({
         id: selectedProduct.id,
         name: selectedProduct.name,
         price: selectedProduct.price,
         imageUrl: defaultImage?.url,
-      }, 1); // Pass quantity as second parameter
+      }, quantity); 
       
-      // Show the notification
+      // Show the notification with more details
       setNotification({
         title: 'Added to cart',
-        description: `${selectedProduct.name} has been added to your cart.`,
+        description: `${quantity} × ${selectedProduct.name} added to your cart.`,
         isVisible: true
       });
+      
+      // Open the cart sidebar
+      openSidebar();
+      
+      // Reset quantity after adding to cart
+      setQuantity(1);
       
       // Hide the notification after 3 seconds
       setTimeout(() => {
@@ -64,6 +112,8 @@ const ProductDetailPage = (): React.ReactElement => {
       }, 3000);
     }
   };
+  
+
   
   // Function to get tag color
   const getTagColor = (tag: ProductTag): string => {
@@ -113,46 +163,63 @@ const ProductDetailPage = (): React.ReactElement => {
     );
   }
   
-  // Render notification if visible
+  // Render notification with animation
   const renderNotification = () => {
-    if (notification?.isVisible) {
-      return (
-        <Box
-          position="fixed"
-          top="20px"
-          right="20px"
-          bg="green.100"
-          color="green.800"
-          p={4}
-          borderRadius="md"
-          zIndex={10}
-          boxShadow="md"
-        >
-          <Heading as="h3" size="sm">{notification.title}</Heading>
-          <Text mt={1}>{notification.description}</Text>
-        </Box>
-      );
-    }
-    return null;
+    return (
+      <AnimatePresence>
+        {notification?.isVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: -50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            style={{
+              position: 'fixed',
+              top: '20px',
+              right: '20px',
+              zIndex: 10,
+            }}
+          >
+            <Flex
+              bg={colorMode === 'light' ? 'green.100' : 'green.800'}
+              color={colorMode === 'light' ? 'green.800' : 'green.100'}
+              p={4}
+              borderRadius="md"
+              boxShadow="md"
+              borderLeft="4px solid"
+              borderColor="green.500"
+              align="center"
+            >
+              <Icon as={FiShoppingCart} mr={3} color="green.500" />
+              <Box>
+                <Heading as="h3" size="sm">{notification?.title}</Heading>
+                <Text mt={1}>{notification?.description}</Text>
+              </Box>
+            </Flex>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
   };
 
   return (
-    <Container maxW="container.xl" py={8}>
-      {renderNotification()}
-      
-      {/* Navigation links instead of breadcrumbs */}
-      <Flex mb={8} fontSize="sm" gap={2} alignItems="center">
-        <Text color="blue.500" onClick={() => navigate('/')} cursor="pointer">Home</Text>
-        <Text>›</Text>
-        <Text color="blue.500" onClick={() => navigate('/menu')} cursor="pointer">Menu</Text>
-        <Text>›</Text>
-        <Text fontWeight="bold">
-          {isLoading ? 
-            <Box width="100px" height="20px" bg="gray.200" /> : 
-            selectedProduct?.name
-          }
-        </Text>
-      </Flex>
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
+      <Container maxW="container.xl" py={8}>
+        {renderNotification()}
+        
+        {/* Breadcrumb Navigation */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{ marginBottom: "2rem" }}
+        >
+          <Breadcrumb items={breadcrumbItems} />
+        </motion.div>
       
       <Grid 
         templateColumns={{ base: '1fr', md: '1fr 1fr' }} 
@@ -376,20 +443,50 @@ const ProductDetailPage = (): React.ReactElement => {
               </Box>
             )}
             
-            {/* Add to Cart */}
+            {/* Quantity Select and Add to Cart */}
             {!isLoading && !!selectedProduct ? (
-              <Button 
-                colorScheme="primary" 
-                size="lg" 
-                width="full"
-                onClick={handleAddToCart}
-                disabled={!selectedProduct?.inStock}
-                mt={4}
-              >
-                {selectedProduct?.inStock ? 'Add to Cart' : 'Out of Stock'}
-              </Button>
+              <Box>
+                {/* Quantity Controls */}
+                <Flex align="center" justify="space-between" mb={4}>
+                  <Text fontWeight="medium">Quantity:</Text>
+                  <Flex align="center">
+                    <IconButton
+                      aria-label="Decrease quantity"
+                      icon={<FiMinus />}
+                      size="sm"
+                      isRound
+                      variant="outline"
+                      onClick={decreaseQuantity}
+                      isDisabled={quantity <= 1}
+                    />
+                    <Text mx={4} fontWeight="bold" minW="20px" textAlign="center">
+                      {quantity}
+                    </Text>
+                    <IconButton
+                      aria-label="Increase quantity"
+                      icon={<FiPlus />}
+                      size="sm"
+                      isRound
+                      variant="outline"
+                      onClick={increaseQuantity}
+                      isDisabled={quantity >= 10}
+                    />
+                  </Flex>
+                </Flex>
+                
+                <Button 
+                  colorScheme="primary" 
+                  size="lg" 
+                  width="full"
+                  onClick={handleAddToCart}
+                  disabled={!selectedProduct?.inStock}
+                  leftIcon={<FiShoppingCart />}
+                >
+                  {selectedProduct?.inStock ? 'Add to Cart' : 'Out of Stock'}
+                </Button>
+              </Box>
             ) : (
-              <Box width="100%" height="48px" bg="gray.200" borderRadius="md" mt={4} />
+              <Box width="100%" height="100px" bg="gray.200" borderRadius="md" mt={4} />
             )}
           </Flex>
         </GridItem>
@@ -397,6 +494,10 @@ const ProductDetailPage = (): React.ReactElement => {
       
       {/* Related Products section could be added here */}
     </Container>
+    
+    {/* Floating Cart Sidebar */}
+    <CartSidebar isOpen={isOpen} onClose={closeSidebar} />
+    </motion.div>
   );
 };
 

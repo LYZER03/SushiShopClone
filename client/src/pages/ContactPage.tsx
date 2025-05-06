@@ -1,13 +1,46 @@
 import React from 'react';
-import { Box, Button, Container, FormControl, FormLabel, Grid, Heading, Input, Text, Textarea, VStack } from '@chakra-ui/react';
+import { 
+  Box, 
+  Button, 
+  Container, 
+  Grid, 
+  Heading, 
+  Input, 
+  Text, 
+  Textarea, 
+  Flex
+} from '@chakra-ui/react';
+
+// Custom components to replace unsupported Chakra UI v3 form elements
+const FormControl: React.FC<{isRequired?: boolean; children: React.ReactNode}> = ({ isRequired, children }) => (
+  <Box mb={4} position="relative">
+    {isRequired && (
+      <Box position="absolute" top="0" right="0" color="red.500">
+        *
+      </Box>
+    )}
+    {children}
+  </Box>
+);
+
+const FormLabel: React.FC<{children: React.ReactNode}> = ({ children }) => (
+  <Text fontWeight="bold" mb={2}>
+    {children}
+  </Text>
+);
 
 /**
  * ContactPage component for customer inquiries and support
  */
 const ContactPage: React.FC = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission logic here
+  };
+
   return (
     <Container maxW="container.xl" py={10}>
-      <VStack spacing={8} align="stretch">
+      <Flex direction="column" gap={8} width="100%">
         <Box textAlign="center">
           <Heading as="h1" size="2xl" mb={4}>
             Contact Us
@@ -20,7 +53,7 @@ const ContactPage: React.FC = () => {
         <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={10}>
           {/* Contact Form */}
           <Box bg="white" p={8} borderRadius="lg" boxShadow="md">
-            <VStack spacing={6} as="form">
+            <Flex direction="column" gap={6} as="form" onSubmit={handleSubmit}>
               <Heading as="h2" size="lg">
                 Send Us a Message
               </Heading>
@@ -47,23 +80,23 @@ const ContactPage: React.FC = () => {
               
               <FormControl isRequired>
                 <FormLabel>Message</FormLabel>
-                <Textarea placeholder="Please provide details about your inquiry..." minHeight="150px" />
+                <Textarea placeholder="Please provide details about your inquiry..." minH="150px" />
               </FormControl>
               
-              <Button colorScheme="primary" size="lg" width="full">
+              <Button colorScheme="primary" size="lg" width="full" type="submit">
                 Submit
               </Button>
-            </VStack>
+            </Flex>
           </Box>
           
           {/* Contact Information */}
           <Box>
-            <VStack spacing={10} align="start">
+            <Flex direction="column" gap={10}>
               <Box>
                 <Heading as="h2" size="lg" mb={4}>
                   Contact Information
                 </Heading>
-                <VStack spacing={4} align="start">
+                <Flex direction="column" gap={4}>
                   <Box>
                     <Text fontWeight="bold" mb={1}>Address</Text>
                     <Text>123 Sushi Lane</Text>
@@ -86,14 +119,14 @@ const ContactPage: React.FC = () => {
                     <Text>Monday - Friday: 11:00 AM - 10:00 PM</Text>
                     <Text>Saturday - Sunday: 12:00 PM - 11:00 PM</Text>
                   </Box>
-                </VStack>
+                </Flex>
               </Box>
               
               <Box width="100%">
                 <Heading as="h2" size="lg" mb={4}>
                   Frequently Asked Questions
                 </Heading>
-                <VStack spacing={4} align="start">
+                <Flex direction="column" gap={4}>
                   <Box>
                     <Text fontWeight="bold">Do you offer delivery?</Text>
                     <Text>Yes, we offer delivery within a 5-mile radius of our location.</Text>
@@ -108,9 +141,9 @@ const ContactPage: React.FC = () => {
                     <Text fontWeight="bold">Do you accommodate dietary restrictions?</Text>
                     <Text>Absolutely! We offer vegetarian, vegan, and gluten-free options.</Text>
                   </Box>
-                </VStack>
+                </Flex>
               </Box>
-            </VStack>
+            </Flex>
           </Box>
         </Grid>
         
@@ -118,7 +151,7 @@ const ContactPage: React.FC = () => {
         <Box height="400px" bg="gray.100" borderRadius="lg" display="flex" justifyContent="center" alignItems="center">
           <Text fontSize="lg" color="gray.500">Map integration will be available here</Text>
         </Box>
-      </VStack>
+      </Flex>
     </Container>
   );
 };

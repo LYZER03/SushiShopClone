@@ -2,20 +2,30 @@ import { createBrowserRouter } from 'react-router-dom';
 import { lazy } from 'react';
 
 import AppLayout from './components/layout/AppLayout';
+import { ProtectedRoute } from './components/auth';
 
-// Use direct imports for the pages we've already created
+// Lazy load pages with suspense boundary
 const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 const HomePage = lazy(() => import('./pages/HomePage'));
 const MenuPage = lazy(() => import('./pages/MenuPage'));
 const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
+const ShopsPage = lazy(() => import('./pages/ShopsPage'));
+const TestPage = lazy(() => import('./pages/TestPage'));
 
-// Define the application routes
-// Create placeholder components that will be implemented later
-const LoginPage = lazy(() => Promise.resolve({ default: () => <div>Login Page - Coming Soon</div> }));
-const RegisterPage = lazy(() => Promise.resolve({ default: () => <div>Register Page - Coming Soon</div> }));
-const ProfilePage = lazy(() => Promise.resolve({ default: () => <div>Profile Page - Coming Soon</div> }));
+// Auth pages
+const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
+const AuthTestPage = lazy(() => import('./pages/AuthTestPage')); // Auth test page
+
+// Lazy load profile pages
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+
+// Placeholder pages that will be implemented later
 const AboutPage = lazy(() => Promise.resolve({ default: () => <div>About Page - Coming Soon</div> }));
 const ContactPage = lazy(() => Promise.resolve({ default: () => <div>Contact Page - Coming Soon</div> }));
+const CartPage = lazy(() => Promise.resolve({ default: () => <div>Cart Page - Coming Soon</div> }));
+const CheckoutPage = lazy(() => Promise.resolve({ default: () => <div>Checkout Page - Coming Soon</div> }));
+const OrderHistoryPage = lazy(() => Promise.resolve({ default: () => <div>Order History - Coming Soon</div> }));
 
 // Define routes with Suspense-ready lazy components
 const router = createBrowserRouter([
@@ -46,7 +56,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'profile',
-        element: <ProfilePage />
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'about',
@@ -55,6 +69,42 @@ const router = createBrowserRouter([
       {
         path: 'contact',
         element: <ContactPage />
+      },
+      {
+        path: 'shops',
+        element: <ShopsPage />
+      },
+      {
+        path: 'cart',
+        element: (
+          <ProtectedRoute>
+            <CartPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'checkout',
+        element: (
+          <ProtectedRoute>
+            <CheckoutPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'orders',
+        element: (
+          <ProtectedRoute>
+            <OrderHistoryPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'test',
+        element: <TestPage />
+      },
+      {
+        path: 'auth-test',
+        element: <AuthTestPage />
       },
     ],
   },

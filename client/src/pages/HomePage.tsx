@@ -1,258 +1,634 @@
-import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  Heading,
-  Image,
-  SimpleGrid,
-  Stack,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/layout';
+import { Button } from '@chakra-ui/button';
+import { Container } from '@chakra-ui/layout';
+import { Flex } from '@chakra-ui/layout';
+import { Heading } from '@chakra-ui/layout';
+import { Image } from '@chakra-ui/image';
+import { SimpleGrid } from '@chakra-ui/layout';
+import { Text } from '@chakra-ui/layout';
+import { VStack } from '@chakra-ui/layout';
+import { Input } from '@chakra-ui/input';
+import { InputGroup } from '@chakra-ui/input';
+import { InputRightElement } from '@chakra-ui/input';
+import { IconButton } from '@chakra-ui/button';
+import { useColorMode } from '@chakra-ui/color-mode';
 import { Link } from 'react-router-dom';
 
 /**
  * Home page component
- * Serves as the landing page with featured items and CTAs
+ * Rubik's × Sushi Shop theme with cube visuals and striking design
  */
 const HomePage = (): JSX.Element => {
+  const { colorMode } = useColorMode();
+  const bgColor = colorMode === 'light' ? '#2a215a' : '#1a1442';
+  const textColor = 'white';
+  
   return (
     <Box as="section">
-      {/* Hero Section */}
+      {/* Hero Section - Rubik's Cube Theme */}
       <Box
-        bg="secondary.50"
-        borderRadius="xl"
+        bgColor={bgColor}
+        color={textColor}
         overflow="hidden"
-        mb={12}
         position="relative"
+        minH={{ base: "90vh", md: "85vh" }}
+        width="100vw"
+        maxWidth="100vw"
+        marginLeft="calc(-50vw + 50%)"
+        marginRight="calc(-50vw + 50%)"
       >
-        <Flex
-          direction={{ base: 'column', md: 'row' }}
-          align="center"
-          py={{ base: 8, md: 10 }}
-          px={{ base: 6, md: 10 }}
-        >
-          <Stack
-            flex={1}
-            spacing={{ base: 5, md: 10 }}
-            maxW={{ base: 'full', md: '50%' }}
+        {/* Background grid patterns - mimicking cube patterns */}
+        <Box 
+          position="absolute" 
+          top="0" 
+          right="0" 
+          height="40%" 
+          width="40%" 
+          opacity="0.1"
+          bgImage="url('/images/rubiks-pattern.png')"
+          bgSize="contain"
+          bgRepeat="no-repeat"
+          bgPosition="top right"
+        />
+        
+        <Box 
+          position="absolute" 
+          bottom="0" 
+          left="0" 
+          height="50%" 
+          width="40%" 
+          opacity="0.1"
+          bgImage="url('/images/grid-pattern.png')"
+          bgSize="contain"
+          bgRepeat="no-repeat"
+          bgPosition="bottom left"
+        />
+        
+        {/* Decorative Elements */}
+        <Box 
+          position="absolute" 
+          top="5%" 
+          right="5%" 
+          w="150px" 
+          h="150px"
+          bg="#ffde00"
+          opacity="0.2"
+          borderRadius="lg"
+          transform="rotate(15deg)"
+          display={{ base: 'none', lg: 'block' }}
+        />
+        
+        <Box 
+          position="absolute" 
+          bottom="15%" 
+          right="15%" 
+          w="100px" 
+          h="100px"
+          bg="#ff2f00"
+          opacity="0.2"
+          borderRadius="lg"
+          transform="rotate(-20deg)"
+          display={{ base: 'none', lg: 'block' }}
+        />
+        
+        <Box 
+          position="absolute" 
+          top="40%" 
+          right="25%" 
+          w="80px" 
+          h="80px"
+          bg="#009fd9"
+          opacity="0.2"
+          borderRadius="lg"
+          transform="rotate(45deg)"
+          display={{ base: 'none', lg: 'block' }}
+        />
+        
+        <Container maxW="container.xl" position="relative" py={{ base: 16, md: 20 }}>
+          <Flex
+            direction={{ base: 'column', lg: 'row' }}
+            align="center"
+            justify="space-between"
+            h="full"
+            position="relative"
+            zIndex="2"
           >
-            <Heading
-              lineHeight={1.1}
-              fontWeight={600}
-              fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
+            {/* Left side - Branding and CTA */}
+            <Box 
+              maxW={{ base: "100%", lg: "45%" }}
+              mb={{ base: 12, lg: 0 }}
+              textAlign={{ base: "center", lg: "left" }}
             >
-              <Text
-                as="span"
-                position="relative"
-                color="primary.500"
-                fontFamily="accent"
+              {/* Brand Logo */}
+              <Flex 
+                justify={{ base: "center", lg: "flex-start" }}
+                align="center"
+                mb={10}
               >
-                寿司
-              </Text>
-              <br />
-              <Text as="span" color="secondary.500">
-                Authentic Japanese Cuisine
-              </Text>
-            </Heading>
-            <Text color="gray.600" fontSize={{ base: 'md', md: 'lg' }}>
-              Experience the finest sushi prepared with fresh, premium
-              ingredients. Our skilled chefs craft each piece with precision and
-              care to deliver authentic flavors and a memorable dining
-              experience.
-            </Text>
-            <Stack
-              spacing={{ base: 4, sm: 6 }}
-              direction={{ base: 'column', sm: 'row' }}
-            >
+                <Image 
+                  src="/images/rubiks-logo.png" 
+                  alt="Rubik's Logo"
+                  height="50px"
+                  fallbackSrc="https://via.placeholder.com/200x50?text=RUBIK'S"
+                  mr={4}
+                />
+                <Box fontSize="4xl" fontWeight="bold">×</Box>
+                <Image 
+                  src="/images/sushi-logo.png" 
+                  alt="Sushi Shop Logo"
+                  height="50px"
+                  fallbackSrc="https://via.placeholder.com/200x50?text=SUSHISHOP"
+                  ml={4}
+                />
+              </Flex>
+              
+              {/* Headline */}
+              <Heading
+                as="h1"
+                fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+                fontWeight="bold"
+                lineHeight="1.2"
+                mb={6}
+              >
+                Plongez dans un univers coloré et varié
+              </Heading>
+              
+              {/* Address search form */}
+              <Box maxW={{ base: "full", md: "400px" }} mx={{ base: "auto", lg: 0 }} mb={8}>
+                <InputGroup size="lg">
+                  <Input 
+                    placeholder="Saisissez une adresse de livraison"
+                    bg="rgba(255,255,255,0.1)"
+                    border="none"
+                    color="white"
+                    _placeholder={{ color: "rgba(255,255,255,0.7)" }}
+                    py={6}
+                    borderRadius="full"
+                  />
+                  <InputRightElement width="4.5rem" height="full">
+                    <IconButton
+                      h="full"
+                      size="lg"
+                      borderRadius="full"
+                      colorScheme="primary"
+                      aria-label="Search location"
+                      icon={<Box as="span">➤</Box>}
+                    />
+                  </InputRightElement>
+                </InputGroup>
+              </Box>
+              
+              {/* CTA Button */}
               <Button
                 as={Link}
                 to="/menu"
-                rounded="md"
                 size="lg"
+                borderRadius="full"
+                bg="#ffde00" // Yellow color matching Rubik's cube
+                color="#000"
                 fontWeight="bold"
-                px={6}
-                colorScheme="primary"
+                px={8}
+                py={6}
+                _hover={{ bg: "#e6c700" }}
               >
-                View Menu
+                Je fonce
               </Button>
-              <Button
-                as={Link}
-                to="/contact"
-                rounded="md"
-                size="lg"
-                fontWeight="bold"
-                px={6}
-                variant="outline"
-                colorScheme="secondary"
-              >
-                Contact Us
-              </Button>
-            </Stack>
-          </Stack>
-          <Flex
-            flex={1}
-            justify="center"
-            align="center"
-            position="relative"
-            w="full"
-            mt={{ base: 10, md: 0 }}
-          >
-            <Box
-              position="relative"
-              height={{ base: '300px', md: '400px' }}
-              width="full"
-              overflow="hidden"
-              borderRadius="xl"
-            >
-              <Image
-                alt="Hero Image"
-                fit="cover"
-                align="center"
-                w="100%"
-                h="100%"
-                src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                fallbackSrc="https://via.placeholder.com/600x400?text=Sushi"
-              />
             </Box>
+            
+            {/* Right side - Sushi Cube Image with 3D-like arrangement */}
+            <Flex 
+              maxW={{ base: "90%", lg: "50%" }}
+              position="relative"
+              justify="center"
+              align="center"
+            >
+              {/* Main Sushi Cube */}
+              <Box position="relative" zIndex="3">
+                <Image
+                  src="/images/sushi-cube.png"
+                  alt="Sushi presented in a Rubik's cube format"
+                  fallbackSrc="https://via.placeholder.com/600x600?text=SUSHI+CUBE"
+                  w="full"
+                  maxW="500px"
+                  borderRadius="md"
+                  shadow="xl"
+                />
+                
+                {/* Floating mini cube elements */}
+                <Box
+                  position="absolute"
+                  top="-50px"
+                  right="-30px"
+                  width="100px"
+                  height="100px"
+                  bg="#ffde00"
+                  borderRadius="lg"
+                  transform="rotate(15deg)"
+                  shadow="md"
+                  opacity="0.9"
+                  display={{ base: 'none', md: 'block' }}
+                  overflow="hidden"
+                >
+                  <Image
+                    src="/images/cube-salmon.jpg"
+                    alt="Salmon sushi cube"
+                    fallbackSrc="https://via.placeholder.com/100?text=SALMON"
+                    objectFit="cover"
+                    w="full"
+                    h="full"
+                  />
+                </Box>
+                
+                <Box
+                  position="absolute"
+                  bottom="-30px"
+                  left="-40px"
+                  width="120px"
+                  height="120px"
+                  bg="#ff2f00"
+                  borderRadius="lg"
+                  transform="rotate(-10deg)"
+                  shadow="md"
+                  opacity="0.9"
+                  display={{ base: 'none', md: 'block' }}
+                  overflow="hidden"
+                >
+                  <Image
+                    src="/images/cube-avocado.jpg"
+                    alt="Avocado sushi cube"
+                    fallbackSrc="https://via.placeholder.com/120?text=AVOCADO"
+                    objectFit="cover"
+                    w="full"
+                    h="full"
+                  />
+                </Box>
+                
+                <Box
+                  position="absolute"
+                  top="30%"
+                  right="-80px"
+                  width="140px"
+                  height="140px"
+                  bg="#009fd9"
+                  borderRadius="lg"
+                  transform="rotate(5deg)"
+                  shadow="md"
+                  opacity="0.9"
+                  display={{ base: 'none', md: 'block' }}
+                  overflow="hidden"
+                >
+                  <Image
+                    src="/images/cube-maki.jpg"
+                    alt="Maki sushi cube"
+                    fallbackSrc="https://via.placeholder.com/140?text=MAKI"
+                    objectFit="cover"
+                    w="full"
+                    h="full"
+                  />
+                </Box>
+                
+                {/* Animated circles */}
+                <Box
+                  position="absolute"
+                  top="-20px"
+                  left="-60px"
+                  width="40px"
+                  height="40px"
+                  borderRadius="full"
+                  bg="rgba(255, 222, 0, 0.6)"
+                  animation="float 6s ease-in-out infinite"
+                  sx={{
+                    '@keyframes float': {
+                      '0%, 100%': { transform: 'translateY(0px)' },
+                      '50%': { transform: 'translateY(-20px)' },
+                    },
+                  }}
+                  display={{ base: 'none', md: 'block' }}
+                />
+                
+                <Box
+                  position="absolute"
+                  bottom="40px"
+                  right="-40px"
+                  width="30px"
+                  height="30px"
+                  borderRadius="full"
+                  bg="rgba(255, 47, 0, 0.6)"
+                  animation="float 4s ease-in-out infinite"
+                  sx={{
+                    '@keyframes float': {
+                      '0%, 100%': { transform: 'translateY(0px)' },
+                      '50%': { transform: 'translateY(-15px)' },
+                    },
+                  }}
+                  display={{ base: 'none', md: 'block' }}
+                />
+              </Box>
+            </Flex>
           </Flex>
-        </Flex>
+        </Container>
       </Box>
 
-      {/* Featured Categories */}
-      <Box as="section" py={10}>
-        <VStack spacing={4} mb={8} textAlign="center">
-          <Heading as="h2" size="xl" color="secondary.700">
-            Our Popular Categories
-          </Heading>
-          <Text fontSize="lg" color="gray.600" maxW="2xl">
-            Explore our wide selection of sushi and Japanese cuisine
-          </Text>
-        </VStack>
+      {/* Geometric separator */}
+      <Box
+        position="relative"
+        height="100px"
+        overflow="hidden"
+        bg="white"
+        width="100vw"
+        maxWidth="100vw"
+        marginLeft="calc(-50vw + 50%)"
+        marginRight="calc(-50vw + 50%)"
+      >
+        <Box
+          position="absolute"
+          top="0"
+          left="0"
+          right="0"
+          height="100px"
+          bg={bgColor}
+          clipPath="polygon(0 0, 100% 0, 100% 30%, 0 100%)"
+        />
+        
+        {/* Decorative cube elements */}
+        <Box
+          position="absolute"
+          top="20px"
+          left="10%"
+          w="30px"
+          h="30px"
+          bg="#ffde00"
+          borderRadius="sm"
+          transform="rotate(25deg)"
+        />
+        
+        <Box
+          position="absolute"
+          top="30px"
+          left="25%"
+          w="20px"
+          h="20px"
+          bg="#ff2f00"
+          borderRadius="sm"
+          transform="rotate(10deg)"
+        />
+        
+        <Box
+          position="absolute"
+          top="15px"
+          right="15%"
+          w="25px"
+          h="25px"
+          bg="#009fd9"
+          borderRadius="sm"
+          transform="rotate(-15deg)"
+        />
+      </Box>
 
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
-          {[
-            {
-              title: 'Nigiri',
-              image:
-                'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351',
-              description:
-                'Hand-pressed sushi with a slice of fish over vinegared rice',
-            },
-            {
-              title: 'Maki Rolls',
-              image:
-                'https://images.unsplash.com/photo-1617196035154-1e7e6e28b0db',
-              description:
-                'Rolled sushi with seaweed outside, filled with rice and ingredients',
-            },
-            {
-              title: 'Sashimi',
-              image:
-                'https://images.unsplash.com/photo-1584583570840-0d90148689ee',
-              description:
-                'Fresh, thinly sliced raw fish or meat served without rice',
-            },
-            {
-              title: 'Poke Bowls',
-              image:
-                'https://images.unsplash.com/photo-1546069901-ba9599a7e63c',
-              description:
-                'Hawaiian-inspired bowls with raw fish, rice, and vegetables',
-            },
-          ].map((category, index) => (
-            <Box
-              key={index}
-              bg="white"
-              borderRadius="lg"
-              overflow="hidden"
-              boxShadow="md"
-              transition="transform 0.3s, box-shadow 0.3s"
-              _hover={{
-                transform: 'translateY(-5px)',
-                boxShadow: 'lg',
-              }}
+      {/* Featured Products Section - Cube Grid Layout */}
+      <Box 
+        as="section" 
+        py={16} 
+        bg="white"
+        width="100vw"
+        maxWidth="100vw"
+        marginLeft="calc(-50vw + 50%)"
+        marginRight="calc(-50vw + 50%)"
+      >
+        <Container maxW="container.xl">
+          <VStack spacing={4} mb={12} textAlign="center">
+            <Text color="#2a215a" fontSize="lg" fontWeight="medium">
+              TOUT LE STOCK
+            </Text>
+            <Heading as="h2" size="xl" color="#2a215a">
+              Nos Best-sellers
+            </Heading>
+          </VStack>
+
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8}>
+            {[
+              {
+                title: 'Maki Mix',
+                image: '/images/sushi-box-1.jpg',
+                price: '16,90 €',
+                tag: 'SUR LE POUCE',
+              },
+              {
+                title: 'Sushi Box',
+                image: '/images/sushi-box-2.jpg',
+                price: '19,90 €',
+                tag: 'SUR LE STOCK',
+              },
+              {
+                title: 'Cube Mix',
+                image: '/images/sushi-box-3.jpg',
+                price: '24,90 €',
+                tag: 'SUR LE STOCK',
+              },
+            ].map((product, index) => (
+              <Box
+                key={index}
+                bg="white"
+                borderRadius="lg"
+                overflow="hidden"
+                boxShadow="lg"
+                transition="transform 0.3s, box-shadow 0.3s"
+                _hover={{
+                  transform: 'translateY(-5px)',
+                  boxShadow: 'xl',
+                }}
+                position="relative"
+              >
+                <Box position="absolute" top={4} left={4} zIndex={2}>
+                  <Box
+                    bg="#ffde00"
+                    color="black"
+                    px={3}
+                    py={1}
+                    borderRadius="full"
+                    fontSize="xs"
+                    fontWeight="bold"
+                  >
+                    {product.tag}
+                  </Box>
+                </Box>
+                
+                <Box h="300px" overflow="hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    w="full"
+                    h="full"
+                    objectFit="cover"
+                    fallbackSrc={`https://via.placeholder.com/600x600?text=${product.title}`}
+                  />
+                </Box>
+                
+                <Flex p={5} justify="space-between" align="center">
+                  <Box>
+                    <Heading as="h3" size="md">
+                      {product.title}
+                    </Heading>
+                    <Text fontWeight="bold" fontSize="lg" mt={1}>
+                      {product.price}
+                    </Text>
+                  </Box>
+                  
+                  <Button
+                    as={Link}
+                    to={`/menu?product=${product.title.toLowerCase().replace(' ', '-')}`}
+                    colorScheme="primary"
+                    size="md"
+                    borderRadius="full"
+                    px={5}
+                  >
+                    Commander
+                  </Button>
+                </Flex>
+              </Box>
+            ))}
+          </SimpleGrid>
+          
+          <Box textAlign="center" mt={12}>
+            <Button
+              as={Link}
+              to="/menu"
+              size="lg"
+              borderRadius="full"
+              bg="#2a215a"
+              color="white"
+              px={8}
+              py={6}
+              _hover={{ bg: '#1a1442' }}
             >
-              <Box h="200px" overflow="hidden">
+              Voir toute la carte
+            </Button>
+          </Box>
+        </Container>
+      </Box>
+
+      {/* Rubik's Experience Section */}
+      <Box
+        as="section"
+        py={16}
+        bg="#2a215a"
+        color="white"
+        position="relative"
+        overflow="hidden"
+        width="100vw"
+        maxWidth="100vw"
+        marginLeft="calc(-50vw + 50%)"
+        marginRight="calc(-50vw + 50%)"
+      >
+        <Box
+          position="absolute"
+          top="-10%"
+          right="-5%"
+          w="300px"
+          h="300px"
+          opacity="0.15"
+          bg="linear-gradient(45deg, #ffde00, #ff2f00, #ffffff)"
+          borderRadius="full"
+          filter="blur(60px)"
+        />
+        
+        <Container maxW="container.xl">
+          <Flex
+            direction={{ base: 'column', lg: 'row' }}
+            align="center"
+            justify="space-between"
+            gap={10}
+          >
+            <Box flex={1} textAlign={{ base: "center", lg: "left" }}>
+              <Heading size="xl" mb={6} lineHeight="1.2">
+                Une expérience culinaire inspirée du Rubik's cube
+              </Heading>
+              <Text fontSize="lg" mb={8} maxW="600px" mx={{ base: "auto", lg: 0 }} opacity="0.9">
+                Découvrez nos créations exclusives où saveurs et couleurs se mêlent pour créer une expérience sensorielle unique. Chaque box est un puzzle gastronomique à résoudre avec vos papilles.
+              </Text>
+              <Button
+                as={Link}
+                to="/about"
+                borderRadius="full"
+                bg="transparent"
+                border="2px solid white"
+                color="white"
+                _hover={{ bg: 'rgba(255,255,255,0.1)' }}
+                size="lg"
+                px={8}
+              >
+                Découvrir notre concept
+              </Button>
+            </Box>
+            
+            <Flex flex={1} justify="center">
+              <SimpleGrid columns={{ base: 2, md: 2 }} spacing={4}>
                 <Image
-                  src={category.image}
-                  alt={category.title}
+                  src="/images/cube-frame-1.jpg"
+                  alt="Sushi Experience"
+                  borderRadius="md"
+                  boxSize="200px"
+                  objectFit="cover"
+                  fallbackSrc="https://via.placeholder.com/200x200?text=Sushi"
+                />
+                <Image
+                  src="/images/cube-frame-2.jpg"
+                  alt="Sushi Experience"
+                  borderRadius="md"
+                  boxSize="200px"
+                  objectFit="cover"
+                  fallbackSrc="https://via.placeholder.com/200x200?text=Sushi"
+                />
+              </SimpleGrid>
+            </Flex>
+          </Flex>
+        </Container>
+      </Box>
+      
+      {/* Social Media Section */}
+      <Box 
+        as="section" 
+        py={16} 
+        bg="#f5f5f5"
+        width="100vw"
+        maxWidth="100vw"
+        marginLeft="calc(-50vw + 50%)"
+        marginRight="calc(-50vw + 50%)"
+      >
+        <Container maxW="container.xl">
+          <VStack spacing={4} mb={10} textAlign="center">
+            <Heading as="h2" size="lg" color="#2a215a">
+              #RUBIKSSUSHISHOP
+            </Heading>
+            <Text fontSize="md" color="gray.600" maxW="2xl">
+              Partagez votre expérience sur Instagram
+            </Text>
+          </VStack>
+          
+          <SimpleGrid columns={{ base: 2, md: 4, lg: 5 }} spacing={4}>
+            {Array(5).fill(0).map((_, i) => (
+              <Box 
+                key={i} 
+                bg="white" 
+                borderRadius="md" 
+                overflow="hidden"
+                boxShadow="sm"
+                transition="transform 0.2s"
+                _hover={{ transform: 'scale(1.03)' }}
+              >
+                <Image
+                  src={`/images/social-${i + 1}.jpg`}
+                  alt={`Social media post ${i + 1}`}
                   w="full"
                   h="full"
                   objectFit="cover"
-                  fallbackSrc="https://via.placeholder.com/300x200"
+                  fallbackSrc={`https://via.placeholder.com/400x400?text=Instagram+${i + 1}`}
                 />
               </Box>
-              <Box p={5}>
-                <Heading as="h3" size="md" mb={2}>
-                  {category.title}
-                </Heading>
-                <Text color="gray.600" fontSize="sm" mb={4}>
-                  {category.description}
-                </Text>
-                <Button
-                  as={Link}
-                  to={`/menu?category=${category.title.toLowerCase()}`}
-                  colorScheme="primary"
-                  size="sm"
-                  variant="outline"
-                >
-                  Browse {category.title}
-                </Button>
-              </Box>
-            </Box>
-          ))}
-        </SimpleGrid>
+            ))}
+          </SimpleGrid>
+        </Container>
       </Box>
-
-      {/* CTA Section */}
-      <Container maxW="5xl" py={16}>
-        <Flex
-          bg="secondary.500"
-          color="white"
-          borderRadius="xl"
-          overflow="hidden"
-          direction={{ base: 'column', md: 'row' }}
-        >
-          <Box flex={1} p={10}>
-            <Heading size="xl" mb={4}>
-              First-time customer?
-            </Heading>
-            <Text fontSize="lg" mb={6}>
-              Sign up today and get 15% off your first order with code SUSHI15
-            </Text>
-            <Button
-              as={Link}
-              to="/register"
-              bg="white"
-              color="secondary.500"
-              _hover={{ bg: 'gray.100' }}
-              size="lg"
-            >
-              Sign Up Now
-            </Button>
-          </Box>
-          <Box
-            flex={1}
-            bg="secondary.600"
-            position="relative"
-            minH={{ base: '200px', md: '300px' }}
-          >
-            <Image
-              alt="Sushi Platter"
-              position="absolute"
-              bottom={0}
-              right={0}
-              w="full"
-              h="full"
-              objectFit="cover"
-              src="https://images.unsplash.com/photo-1553621042-f6e147245754"
-              fallbackSrc="https://via.placeholder.com/600x400?text=Order+Now"
-            />
-          </Box>
-        </Flex>
-      </Container>
     </Box>
   );
 };

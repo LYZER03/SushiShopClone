@@ -1,4 +1,5 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
+// Theme customization for Sushi Shop
 
 // Define the color palette based on the design document
 const colors = {

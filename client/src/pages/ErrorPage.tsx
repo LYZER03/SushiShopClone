@@ -4,7 +4,7 @@ import {
   Heading,
   Image,
   Text,
-  VStack,
+  Flex,
 } from '@chakra-ui/react';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-d
  * Error page component displayed when route errors occur
  * Provides user-friendly error messages and navigation options
  */
-const ErrorPage = (): JSX.Element => {
+const ErrorPage = (): React.ReactElement => {
   const error = useRouteError();
   const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ const ErrorPage = (): JSX.Element => {
       textAlign="center"
       p={6}
     >
-      <VStack spacing={8} maxW="md">
+      <Flex direction="column" gap={8} maxW="md" width="100%" alignItems="center">
         <Image
           src={
             statusCode === 404
@@ -59,7 +59,11 @@ const ErrorPage = (): JSX.Element => {
           }
           alt="Error illustration"
           maxW="200px"
-          fallbackSrc="https://via.placeholder.com/200x200?text=Error"
+          // Using onError instead of fallbackSrc for Chakra UI v3 compatibility
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "https://via.placeholder.com/200x200?text=Error";
+          }}
         />
 
         <Heading
@@ -94,7 +98,7 @@ const ErrorPage = (): JSX.Element => {
             Go Home
           </Button>
         </Box>
-      </VStack>
+      </Flex>
     </Box>
   );
 };
