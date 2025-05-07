@@ -20,6 +20,9 @@ const AuthTestPage = lazy(() => import('./pages/AuthTestPage')); // Auth test pa
 // Lazy load profile pages
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 
+// Demo pages
+const FiltersDemoPage = lazy(() => import('./pages/FiltersDemoPage'));
+
 // Placeholder pages that will be implemented later
 const AboutPage = lazy(() => Promise.resolve({ default: () => <div>About Page - Coming Soon</div> }));
 const ContactPage = lazy(() => Promise.resolve({ default: () => <div>Contact Page - Coming Soon</div> }));
@@ -105,6 +108,10 @@ const router = createBrowserRouter([
       {
         path: 'auth-test',
         element: <AuthTestPage />
+      },
+      {
+        path: 'filters-demo',
+        element: <FiltersDemoPage />
       },
     ],
   },
